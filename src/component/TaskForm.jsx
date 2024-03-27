@@ -84,10 +84,11 @@ const TaskForm = () => {
           />
           <select
             name="status"
-            value={formData.status}
+            value={formData.status || "Pending"}
             onChange={handleChange}
             className="w-full px-3 py-2 mb-2 border border-gray-300 rounded"
           >
+            {/* <option value="Pending">Select Status</option> */}
             <option value="Pending">Pending</option>
             <option value="In Progress">In Progress</option>
             <option value="Completed">Completed</option>
