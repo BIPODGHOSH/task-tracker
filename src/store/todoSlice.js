@@ -38,6 +38,7 @@ const todoSlice = createSlice({
         (task) => task.id === action.payload.id
       );
       if (index !== -1) {
+        console.log(action.payload);
         state.tasks[index] = action.payload;
       }
     },
