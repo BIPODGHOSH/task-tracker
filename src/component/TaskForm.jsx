@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { addTask } from "../store/todoSlice";
+import { addTask, clearFilteredTasks } from "../store/todoSlice";
 import { ImCross } from "react-icons/im";
 import {
   Button,
@@ -36,12 +36,13 @@ const TaskForm = () => {
       id: Math.floor(Math.random() * 1000),
       title: formData.title,
       description: formData.description,
-      startDate: new Date(),
+      // startDate: new Date(),
       endDate: null,
       status: formData.status,
       assignee: formData.assignee,
       priority: formData.priority,
     };
+    dispatch(clearFilteredTasks());
     dispatch(addTask(newTask));
     handleOpen();
     setFormData({

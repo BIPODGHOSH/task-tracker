@@ -8,19 +8,20 @@ const initialState = {
       id: 1,
       title: "Task 1",
       description: "Description of Task 1",
-      startDate: new Date(),
+      // startDate: new Date(),
       endDate: null,
       status: "Pending",
       assignee: "John Doe",
       priority: "P1",
     },
   ],
-  filters: {
-    assignee: "",
-    priority: "",
-    startDateFrom: null,
-    startDateTo: null,
-  },
+  // filters: {
+  //   assignee: "",
+  //   priority: "",
+  //   startDateFrom: null,
+  //   startDateTo: null,
+  // },
+  filteredTasks: [],
 };
 
 const todoSlice = createSlice({
@@ -42,12 +43,26 @@ const todoSlice = createSlice({
         state.tasks[index] = action.payload;
       }
     },
-    setFilters(state, action) {
-      state.filters = action.payload;
+    filterTask(state, action) {
+      const { assignee, priority } = action.payload;
+      state.filteredTasks = state.tasks.filter((task) => {
+        return (
+          (assignee === "" || task.assignee === assignee) &&
+          (priority === "" || task.priority === priority)
+        );
+      });
+    },
+    clearFilteredTasks(state) {
+      state.filteredTasks = [];
     },
   },
 });
 
-export const { addTask, deleteTask, updateTask, setFilters } =
-  todoSlice.actions;
+export const {
+  addTask,
+  deleteTask,
+  updateTask,
+  filterTask,
+  clearFilteredTasks,
+} = todoSlice.actions;
 export default todoSlice.reducer;

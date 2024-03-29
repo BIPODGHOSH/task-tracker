@@ -1,12 +1,15 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { filterTask } from "../store/todoSlice";
 
-const Filter = ({ filterTasks }) => {
+const Filter = () => {
   const [filters, setFilters] = useState({
     assignee: "",
     priority: "",
-    startDateFrom: "",
-    startDateTo: "",
+    // startDateFrom: "",
+    // startDateTo: "",
   });
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     setFilters({ ...filters, [e.target.name]: e.target.value });
@@ -14,7 +17,7 @@ const Filter = ({ filterTasks }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    filterTasks(filters);
+    dispatch(filterTask(filters));
   };
 
   return (
@@ -40,13 +43,13 @@ const Filter = ({ filterTasks }) => {
           <option value="P1">P1</option>
           <option value="P2">P2</option>
         </select>
-        <input
+        {/* <input
           type="date"
           name="startDateFrom"
           value={filters.startDateFrom}
           onChange={handleChange}
           className="w-full px-2 py-1 mb-2 border border-gray-300 rounded"
-        />
+        /> */}
         {/* <input
           type="date"
           name="startDateTo"
