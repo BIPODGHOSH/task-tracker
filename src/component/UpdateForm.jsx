@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { updateTask } from "../store/todoSlice";
 
-const UpdateForm = ({ task, handleModal }) => {
+const UpdateForm = ({ task, open, handleModal, update }) => {
   const [updateFormData, setUpdateFormData] = useState({
     id: task.id,
     title: task.title,
@@ -91,7 +91,7 @@ const UpdateForm = ({ task, handleModal }) => {
               type="submit"
               className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
             >
-              Add Task
+              {update ? "Update Task" : "Add Task"}
             </button>
             <button onClick={handleModal} className="text-xl">
               X

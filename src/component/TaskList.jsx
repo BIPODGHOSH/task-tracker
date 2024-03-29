@@ -1,18 +1,35 @@
 import React, { useState } from "react";
 import { CiMenuKebab } from "react-icons/ci";
-
-import { Card, CardHeader, CardBody, button } from "@material-tailwind/react";
+import {
+  Card,
+  CardHeader,
+  CardBody,
+  Button,
+  Dialog,
+  DialogBody,
+} from "@material-tailwind/react";
 import UpdateForm from "./UpdateForm";
 import { useDispatch } from "react-redux";
 import { clearFilteredTasks } from "../store/todoSlice";
+import Modal from "./Modal";
 
 const TaskList = ({ tasks, back }) => {
+  const [openModalId, setOpenModalId] = useState(null);
+  const [showEdit, setShowEdit] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [forUpdateTask, setForUpdateTask] = useState(null);
   const dispatch = useDispatch();
-  const [isShowModal, setIsShowModal] = useState(false);
 
-  const handleModal = () => {
-    setIsShowModal(!isShowModal);
+  const handleOpen = (id) => {
+    setOpenModalId(id);
+    setOpen(!open);
   };
+  const handleShowEdit = (newTask) => {
+    setForUpdateTask(newTask);
+    setShowEdit(!showEdit);
+  };
+  console.log(open);
+
   const groupedTasks = tasks.reduce((acc, task) => {
     if (!acc[task.status]) {
       acc[task.status] = [];
@@ -67,14 +84,28 @@ const TaskList = ({ tasks, back }) => {
                     <p className=" font-semibold">@{task.assignee}</p>
                     <CiMenuKebab
                       className=" cursor-pointer"
-                      onClick={handleModal}
+                      onClick={() => handleOpen(task.id)}
                     />
                   </div>
                   <h1 className="bg-blue-500 px-2 max-w-[120px] py-1 text-center rounded-md text-white">
                     {task.status === "Pending" ? "Assign" : task.status}
                   </h1>
-                  {isShowModal && (
-                    <UpdateForm task={task} handleModal={handleModal} />
+                  {open && task.id === openModalId && (
+                    // <UpdateForm task={task} handleModal={handleModal} />
+                    <Modal
+                      task={task}
+                      handleShowEdit={handleShowEdit}
+                      open={open}
+                      handleOpen={handleOpen}
+                    />
+                  )}
+                  {showEdit && (
+                    <UpdateForm
+                      task={forUpdateTask}
+                      open={showEdit}
+                      handleModal={handleShowEdit}
+                      update={true}
+                    />
                   )}
                 </div>
               ))}
@@ -84,7 +115,7 @@ const TaskList = ({ tasks, back }) => {
       </div>
       {back && (
         <button
-          className=" px-2 bg-blue-500 rounded-md text-center py-1 text-white m-auto "
+          className=" px-2 bg-blue-500 rounded-md text-center py-1 text-white m-auto cursor-pointer"
           onClick={handleBack}
         >
           Back To Home
