@@ -123,7 +123,7 @@ const TaskForm = () => {
             >
               Add Task
             </button>
-            <button onClick={handleOpen} className="text-xl">
+            <button onClick={handleOpen} className="text-xl text-white">
               X
             </button>
           </div>
