@@ -1,20 +1,13 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addTask, clearFilteredTasks } from "../store/todoSlice";
-import { ImCross } from "react-icons/im";
-import {
-  Button,
-  Dialog,
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Typography,
-  Input,
-  Checkbox,
-} from "@material-tailwind/react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { Button, Dialog } from "@material-tailwind/react";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const TaskForm = () => {
+  const { user } = useAuth0();
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     title: "",
@@ -24,7 +17,13 @@ const TaskForm = () => {
     status: "Pending",
   });
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen((cur) => !cur);
+  const handleOpen = () => {
+    if (user) {
+      setOpen((cur) => !cur);
+    } else {
+      toast.warn("Please Login");
+    }
+  };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -58,6 +57,7 @@ const TaskForm = () => {
       <Button onClick={handleOpen} className="px-3 py-1 min-w-24 bg-blue-950">
         Add Task
       </Button>
+      <ToastContainer />
       <Dialog
         size="xs"
         open={open}
